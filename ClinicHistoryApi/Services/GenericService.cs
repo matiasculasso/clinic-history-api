@@ -43,7 +43,7 @@ namespace ClinicHistoryApi.Service
 			if (entity is IAuditableEntity)
 			{
 				entity.GetType().GetProperty("CreatedOn").SetValue(entity, DateTime.Now);
-				entity.GetType().GetProperty("CreatedBy").SetValue(entity, _httpContextAccessor.HttpContext.User.Identity.Name);
+				entity.GetType().GetProperty("CreatedBy").SetValue(entity, _httpContextAccessor.HttpContext.User.Identity.Name ?? string.Empty);
 			}
 
 			await _ctx.Set<T>().AddAsync(entity);

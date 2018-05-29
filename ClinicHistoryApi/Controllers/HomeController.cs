@@ -1,9 +1,10 @@
 ﻿using System.Threading.Tasks;
-using IdentityServer4.Services;
+using ClinicHistoryApi.Auth;
 using ClinicHistoryApi.Auth.Models;
+using IdentityServer4.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ClinicHistoryApi.Auth.Controllers
+namespace ClinicHistoryApi.Controllers
 {
     [SecurityHeaders]
     public class HomeController : Controller

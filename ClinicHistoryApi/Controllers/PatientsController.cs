@@ -9,9 +9,8 @@ using System.Threading.Tasks;
 using System;
 
 namespace ClinicHistoryApi.Auth.Controllers
-{
-	[AllowAnonymous]
-	// [Authorize(AuthenticationSchemes = "Bearer", Policy = "patients")]
+{	
+	[Authorize(AuthenticationSchemes = "Bearer", Policy = "patients")]
 	[Produces("application/json")]	
 	public class PatientsController : Controller
     {

@@ -1,12 +1,13 @@
 ﻿using System.Threading.Tasks;
-using IdentityServer4.Services;
-using IdentityServer4.Stores;
+using ClinicHistoryApi.Auth;
 using ClinicHistoryApi.Auth.Models;
 using ClinicHistoryApi.Auth.Services;
+using IdentityServer4.Services;
+using IdentityServer4.Stores;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace ClinicHistoryApi.Auth.Controllers
+namespace ClinicHistoryApi.Controllers
 {
     /// <summary>
     /// This controller processes the consent UI
