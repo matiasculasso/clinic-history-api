@@ -1,16 +1,17 @@
-﻿﻿using System.Reflection;
-using IdentityServer4.Services;
+﻿using System.Reflection;
+using ClinicHistoryApi.Auth;
 using ClinicHistoryApi.Auth.Services;
 using ClinicHistoryApi.Data;
+using ClinicHistoryApi.Service;
+using ClinicHistoryApi.Service.Interfaces;
+using IdentityServer4.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ClinicHistoryApi.Service.Interfaces;
-using ClinicHistoryApi.Service;
-using Microsoft.AspNetCore.Http;
 
-namespace ClinicHistoryApi.Auth.Configuration
+namespace ClinicHistoryApi.Configuration
 {
 	public static class ServiceCollectionExtensions
     {

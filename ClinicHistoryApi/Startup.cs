@@ -1,18 +1,15 @@
 ﻿using AutoMapper;
-using ClinicHistoryApi.Auth.Configuration;
 using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
 using System;
-using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using ClinicHistoryApi.Configuration;
 
@@ -25,16 +22,18 @@ namespace ClinicHistoryApi
 		private IHostingEnvironment Environment { get; }
 
 		private readonly ILoggerFactory _loggerFactory;
+		private readonly AppSettingsOptions _settings;
 
 		public Startup(ILoggerFactory loggerFactory, IHostingEnvironment env)
 		{
 			Configuration = new ConfigurationBuilder()
 				.SetBasePath(env.ContentRootPath)
-				.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+				.AddJsonFile("appsettings.json")
 				.Build();
 
 			Environment = env;
 			_loggerFactory = loggerFactory;
+			_settings = Configuration.GetSection("AppSettings").Get<AppSettingsOptions>();
 		}
 
 		public void ConfigureServices(IServiceCollection services)
@@ -54,11 +53,13 @@ namespace ClinicHistoryApi
 			var cert = new X509Certificate2(Convert.FromBase64String(Configuration["SigningCertificate"]), "",
 				X509KeyStorageFlags.MachineKeySet);
 
+			var idpSettings = new IdentityServerConfig(_settings);
+
 			services.AddIdentityServer()
 			  .AddSigningCredential(cert)
-			  .AddInMemoryIdentityResources(IdentityServerConfig.GetIdentityResources())
-			  .AddInMemoryApiResources(IdentityServerConfig.GetApiResources())
-			  .AddInMemoryClients(IdentityServerConfig.GetClients())
+			  .AddInMemoryIdentityResources(idpSettings.GetIdentityResources())
+			  .AddInMemoryApiResources(idpSettings.GetApiResources())
+			  .AddInMemoryClients(idpSettings.GetClients())
 			  .AddAspNetIdentity<IdentityUser>();
 
 			services.AddMvc();
@@ -66,7 +67,7 @@ namespace ClinicHistoryApi
 			services.AddAuthentication("Bearer")
 				  .AddIdentityServerAuthentication(options =>
 				  {
-					  options.Authority = "http://localhost:12000/";
+					  options.Authority = _settings.AutorityUrl;
 					  options.ApiName = "patients";
 					  options.ApiSecret = "patientsSecret";
 					  options.SupportedTokens = SupportedTokens.Both;
@@ -102,7 +103,7 @@ namespace ClinicHistoryApi
 			app.UseStaticFiles();
 
 			app.UseCors(builder =>
-				builder.WithOrigins("http://localhost:4200")
+				builder.WithOrigins(_settings.ClientUrl)
 				.AllowAnyHeader()
 				.AllowAnyMethod()				
 				.AllowCredentials());

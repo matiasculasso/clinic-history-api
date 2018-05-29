@@ -1,4 +1,5 @@
 ﻿using ClinicHistoryApi.Auth.Configuration;
+using ClinicHistoryApi.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Serilog;
