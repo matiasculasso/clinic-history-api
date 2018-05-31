@@ -56,7 +56,6 @@ namespace ClinicHistoryApi.Configuration
 					ClientName = "clinic-hitstory",
 					ClientId = "clinic-hitstory",
 					AccessTokenType = AccessTokenType.Reference,
-                    //AccessTokenLifetime = 600, // 10 minutes, default 60 minutes
                     AllowedGrantTypes = GrantTypes.Implicit,
 					RequireConsent = false,
 					AllowAccessTokensViaBrowser = true,

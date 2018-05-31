@@ -21,8 +21,7 @@ namespace ClinicHistoryApi.Controllers
 	{
 		private readonly IIdentityServerInteractionService _interaction;
 		private readonly IEventService _events;
-		private readonly AccountService _account;
-		private readonly Serilog.Core.Logger _logger;
+		private readonly AccountService _account;		
 		private readonly UserManager<IdentityUser> _userManager;
 		private readonly SignInManager<IdentityUser> _signInManager;
 
@@ -30,7 +29,6 @@ namespace ClinicHistoryApi.Controllers
 			IIdentityServerInteractionService interaction,
 			IClientStore clientStore,
 			IHttpContextAccessor httpContextAccessor,
-			IAuditLoggerFactory loggerFactory,
 			IEventService events,
 			UserManager<IdentityUser> userManager,
 			SignInManager<IdentityUser> signInManager,
@@ -38,8 +36,7 @@ namespace ClinicHistoryApi.Controllers
 			)
 		{
 			_interaction = interaction;
-			_account = new AccountService(interaction, httpContextAccessor, schemeProvider, clientStore);
-			_logger = loggerFactory.CreateLogger();
+			_account = new AccountService(interaction, httpContextAccessor, schemeProvider, clientStore);			
 			_userManager = userManager;
 			_signInManager = signInManager;
 			_events = events;
@@ -66,8 +63,7 @@ namespace ClinicHistoryApi.Controllers
 			{
 				var ctx = _interaction.GetAuthorizationContextAsync(model.ReturnUrl);
 
-				var user = _userManager.FindByNameAsync(model.Username).Result;
-				var loginFailureEvent = "User Login Failure";
+				var user = _userManager.FindByNameAsync(model.Username).Result;				
 
 				var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberLogin, false);
 				if (result.Succeeded)
@@ -87,18 +83,12 @@ namespace ClinicHistoryApi.Controllers
 
 					await HttpContext.SignInAsync(user.Id, user.UserName, props);
 
-					_logger.Information("Authentication Event: {Type}, Username {Username}, SubjectId {SubjectId}, Tenant {Tenant}, ClientId {ClientId}",
-						"User Login Success", user.UserName, user.Id, ctx.Result.Tenant, ctx.Result.ClientId);					
-
 					if (_interaction.IsValidReturnUrl(model.ReturnUrl))
 					{
 						return Redirect(model.ReturnUrl);
 					}
 					return Redirect("~/");
 				}
-
-				_logger.Information("Authentication Event: {Type}, Username {Username}, SubjectId {SubjectId}, Tenant {Tenant}, ClientId {ClientId}", 
-					loginFailureEvent, model.Username, user?.Id, ctx.Result.Tenant, ctx.Result.ClientId);				
 				await _events.RaiseAsync(new UserLoginFailureEvent(model.Username, "invalid credentials"));
 				ModelState.AddModelError("", AccountOptions.InvalidCredentialsErrorMessage);
 			}
@@ -178,8 +168,6 @@ namespace ClinicHistoryApi.Controllers
 			var subjectId = User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
 
 			var name = User.Claims.FirstOrDefault(c => c.Type == "name")?.Value;
-
-			_logger.Information("Authentication Event: {Type}, SubjectId {SubjectId}, Name {Name}", "User Logout Success", subjectId, name);
 		}
 	}
 }

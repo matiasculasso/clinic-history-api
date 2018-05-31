@@ -1,14 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ClinicHistoryApi.Entities;
-using ClinicHistoryApi.Service.Interfaces;
-using AutoMapper;
-using ClinicHistoryApi.Models.Entities;
-using Microsoft.AspNetCore.Authorization;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using System;
+using AutoMapper;
+using ClinicHistoryApi.Entities;
+using ClinicHistoryApi.Models.Entities;
+using ClinicHistoryApi.Service.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
-namespace ClinicHistoryApi.Auth.Controllers
+namespace ClinicHistoryApi.Controllers
 {	
 	[Authorize(AuthenticationSchemes = "Bearer", Policy = "patients")]
 	[Produces("application/json")]	
@@ -16,7 +17,7 @@ namespace ClinicHistoryApi.Auth.Controllers
     {
 		private readonly IGenericService _genericService;
 		private readonly IMapper _mapper;
-		
+
 		public PatientsController(IGenericService genericService, IMapper mapper)
         {
 			_genericService = genericService;

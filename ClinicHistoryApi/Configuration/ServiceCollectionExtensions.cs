@@ -17,8 +17,7 @@ namespace ClinicHistoryApi.Configuration
     {
         public static IServiceCollection AddDependencies(this IServiceCollection services)
         {
-			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-			services.AddTransient<IAuditLoggerFactory, AuditLoggerFactory>();
+			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();			
 			services.AddScoped<IProfileService, ProfileService>();
 			services.AddTransient<IGenericService, GenericService>();
 			services.AddTransient<IUnitOfWork, UnitOfWork>();
@@ -52,6 +51,6 @@ namespace ClinicHistoryApi.Configuration
 			    .AddDefaultTokenProviders();
 
 		    return services;
-	    }		
-	}
+	    }
+    }
 }
