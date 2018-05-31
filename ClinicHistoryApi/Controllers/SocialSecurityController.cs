@@ -1,15 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ClinicHistoryApi.Entities;
-using ClinicHistoryApi.Service.Interfaces;
-using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using ClinicHistoryApi.Entities;
+using ClinicHistoryApi.Service.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
-namespace ClinicHistoryApi.Auth.Controllers
+namespace ClinicHistoryApi.Controllers
 {
-	// [Authorize(AuthenticationSchemes = "Bearer", Policy = "patients")]
 	[AllowAnonymous]
+	// [Authorize(AuthenticationSchemes = "Bearer", Policy = "patients")]
 	[Produces("application/json")]	
 	public class SocialSecurityController : Controller
     {
@@ -21,9 +21,7 @@ namespace ClinicHistoryApi.Auth.Controllers
 		
 		[HttpGet("api/social-securities/")]		
 		public async Task<SocialSecurity[]> Get(string filter)
-		{			
-			// TODO: Add filter by name
-
+		{						
 			var result = _genericService.Find<SocialSecurity>(
 				x => string.IsNullOrEmpty(filter) || x.Name.Contains(filter),					
 				y => y.OrderBy(z => z.Name));

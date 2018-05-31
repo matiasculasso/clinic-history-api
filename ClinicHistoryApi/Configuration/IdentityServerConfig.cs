@@ -6,9 +6,14 @@ namespace ClinicHistoryApi.Configuration
 
 	public class IdentityServerConfig
 	{
-		public static string HOST_URL = "http://localhost:1200";
+		private readonly AppSettingsOptions _settings;
 
-		public static IEnumerable<IdentityResource> GetIdentityResources()
+		public IdentityServerConfig(AppSettingsOptions settings)
+		{
+			_settings = settings;
+		}
+
+		public IEnumerable<IdentityResource> GetIdentityResources()
 		{
 			return new List<IdentityResource>
 			{
@@ -18,7 +23,7 @@ namespace ClinicHistoryApi.Configuration
 			};
 		}
 
-		public static IEnumerable<ApiResource> GetApiResources()
+		public IEnumerable<ApiResource> GetApiResources()
 		{
 			return new List<ApiResource>
 			{
@@ -41,7 +46,7 @@ namespace ClinicHistoryApi.Configuration
 		}
 
 		// clients want to access resources (aka scopes)
-		public static IEnumerable<Client> GetClients()
+		public IEnumerable<Client> GetClients()
 		{
 			// client credentials client
 			return new List<Client>
@@ -51,21 +56,20 @@ namespace ClinicHistoryApi.Configuration
 					ClientName = "clinic-hitstory",
 					ClientId = "clinic-hitstory",
 					AccessTokenType = AccessTokenType.Reference,
-                    //AccessTokenLifetime = 600, // 10 minutes, default 60 minutes
                     AllowedGrantTypes = GrantTypes.Implicit,
 					RequireConsent = false,
 					AllowAccessTokensViaBrowser = true,
 					RedirectUris = new List<string>
 					{
-						 "http://localhost:4200/"
+						_settings.ClientUrl
 					},
 					PostLogoutRedirectUris = new List<string>
 					{
-						 "http://localhost:4200/"
+						_settings.ClientUrl
 					},
 					AllowedCorsOrigins = new List<string>
 					{
-						 "http://localhost:4200"
+						_settings.ClientUrl
 					},
 					AllowedScopes = new List<string>
 					{

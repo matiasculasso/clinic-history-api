@@ -1,16 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ClinicHistoryApi.Entities;
-using ClinicHistoryApi.Service.Interfaces;
-using AutoMapper;
-using ClinicHistoryApi.Models.Entities;
-using Microsoft.AspNetCore.Authorization;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using ClinicHistoryApi.Entities;
+using ClinicHistoryApi.Models.Entities;
+using ClinicHistoryApi.Service.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
-namespace ClinicHistoryApi.Auth.Controllers
+namespace ClinicHistoryApi.Controllers
 {
-	[AllowAnonymous]
-	// [Authorize(AuthenticationSchemes = "Bearer", Policy = "patients")]
+	[Authorize(AuthenticationSchemes = "Bearer", Policy = "patients")]
 	[Produces("application/json")]	
 	public class ConsultationsController : Controller
     {

@@ -1,23 +1,23 @@
-﻿﻿using System.Reflection;
-using IdentityServer4.Services;
+﻿using System.Reflection;
+using ClinicHistoryApi.Auth;
 using ClinicHistoryApi.Auth.Services;
 using ClinicHistoryApi.Data;
+using ClinicHistoryApi.Service;
+using ClinicHistoryApi.Service.Interfaces;
+using IdentityServer4.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ClinicHistoryApi.Service.Interfaces;
-using ClinicHistoryApi.Service;
-using Microsoft.AspNetCore.Http;
 
-namespace ClinicHistoryApi.Auth.Configuration
+namespace ClinicHistoryApi.Configuration
 {
 	public static class ServiceCollectionExtensions
     {
         public static IServiceCollection AddDependencies(this IServiceCollection services)
         {
-			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-			services.AddTransient<IAuditLoggerFactory, AuditLoggerFactory>();
+			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();			
 			services.AddScoped<IProfileService, ProfileService>();
 			services.AddTransient<IGenericService, GenericService>();
 			services.AddTransient<IUnitOfWork, UnitOfWork>();
@@ -51,6 +51,6 @@ namespace ClinicHistoryApi.Auth.Configuration
 			    .AddDefaultTokenProviders();
 
 		    return services;
-	    }		
-	}
+	    }
+    }
 }

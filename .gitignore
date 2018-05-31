@@ -2,4 +2,9 @@ ClinicHistoryApi/bin/
 ClinicHistoryApi/logs/log-20170915.txt
 ClinicHistoryApi/logs/
 ClinicHistoryApi/obj/
+<<<<<<< HEAD
+=======
+.vs/ClinicHistoryApi/v15/.suo
+.vs/ClinicHistoryApi/v15/Server/sqlite3/storage.ide
+>>>>>>> MovingConfiguration
 .vs/ClinicHistoryApi/v15/

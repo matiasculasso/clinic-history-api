@@ -1,13 +1,12 @@
-﻿using System.IO;
-using Microsoft.AspNetCore;
+﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace ClinicHistoryApi.Auth
+namespace ClinicHistoryApi
 {
 	public class Program
-	{
+	{		
 		public static void Main(string[] args)
-		{
+		{			
 			WebHost.CreateDefaultBuilder()
 			  .UseStartup<Startup>()
 			  .Build()
@@ -20,5 +19,6 @@ namespace ClinicHistoryApi.Auth
 				.UseEnvironment("desing")
 				.UseStartup<Startup>()
 				.Build();
-	}
+
+}
 }

@@ -1,15 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using ClinicHistoryApi.Entities;
 using ClinicHistoryApi.Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 
-
-namespace ClinicHistoryApi.Auth.Controllers
+namespace ClinicHistoryApi.Controllers
 {
-	// [Authorize(AuthenticationSchemes = "Bearer", Policy = "patients")]
-	[AllowAnonymous]
+	[Authorize(AuthenticationSchemes = "Bearer", Policy = "patients")]	
 	[Produces("application/json")]	
 	public class DiagnosticsController : Controller
     {

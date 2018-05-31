@@ -1,40 +1,40 @@
 ﻿using AutoMapper;
-using ClinicHistoryApi.Auth.Configuration;
 using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Serilog;
-using Serilog.Events;
 using System;
-using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using ClinicHistoryApi.Configuration;
+using Serilog;
+using Serilog.Events;
+using Serilog.Formatting;
+using Serilog.Sinks.MSSqlServer;
+using Swashbuckle.AspNetCore.Swagger;
 
 
 namespace ClinicHistoryApi
 {
 	public class Startup
-	{	
+	{
 		private IConfigurationRoot Configuration { get; }
 		private IHostingEnvironment Environment { get; }
 
-		private readonly ILoggerFactory _loggerFactory;
+		private readonly AppSettingsOptions _settings;
 
 		public Startup(ILoggerFactory loggerFactory, IHostingEnvironment env)
 		{
 			Configuration = new ConfigurationBuilder()
 				.SetBasePath(env.ContentRootPath)
-				.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+				.AddJsonFile("appsettings.json")
 				.Build();
 
 			Environment = env;
-			_loggerFactory = loggerFactory;
+			_settings = Configuration.GetSection("AppSettings").Get<AppSettingsOptions>();
 		}
 
 		public void ConfigureServices(IServiceCollection services)
@@ -45,32 +45,38 @@ namespace ClinicHistoryApi
 
 			services.AddAutoMapper();
 
-			services.AddCors();			
-			
-			services.InjectDbContext(Configuration.GetConnectionString("ClinicHistory"));
+			services.AddCors();
 
-			ConfigureLogging(_loggerFactory);
+			services.InjectDbContext(Configuration.GetConnectionString("ClinicHistory"));
 
 			var cert = new X509Certificate2(Convert.FromBase64String(Configuration["SigningCertificate"]), "",
 				X509KeyStorageFlags.MachineKeySet);
 
+			var idpSettings = new IdentityServerConfig(_settings);
+
 			services.AddIdentityServer()
 			  .AddSigningCredential(cert)
-			  .AddInMemoryIdentityResources(IdentityServerConfig.GetIdentityResources())
-			  .AddInMemoryApiResources(IdentityServerConfig.GetApiResources())
-			  .AddInMemoryClients(IdentityServerConfig.GetClients())
+			  .AddInMemoryIdentityResources(idpSettings.GetIdentityResources())
+			  .AddInMemoryApiResources(idpSettings.GetApiResources())
+			  .AddInMemoryClients(idpSettings.GetClients())
 			  .AddAspNetIdentity<IdentityUser>();
 
 			services.AddMvc();
 
+			services.AddSwaggerGen(c =>
+			{
+				c.SwaggerDoc("v1", new Info { Title = "Clinic History API", Version = "v1" });
+			});
+
 			services.AddAuthentication("Bearer")
-				  .AddIdentityServerAuthentication(options =>
-				  {
-					  options.Authority = "http://localhost:12000/";
-					  options.ApiName = "patients";
-					  options.ApiSecret = "patientsSecret";
-					  options.SupportedTokens = SupportedTokens.Both;
-				  });
+				.AddIdentityServerAuthentication(options =>
+				{
+					options.RequireHttpsMetadata = false;
+					options.Authority = _settings.AutorityUrl;
+					options.ApiName = "patients";
+					options.ApiSecret = "patientsSecret";
+					options.SupportedTokens = SupportedTokens.Both;
+				});
 
 			var patientsPolicy = new AuthorizationPolicyBuilder()
 			   .RequireAuthenticatedUser()
@@ -78,23 +84,21 @@ namespace ClinicHistoryApi
 			   .Build();
 
 			services.AddAuthorization(options =>
-			{			
+			{
 				options.AddPolicy("patients", policyUser =>
 				{
 					policyUser.RequireClaim("scope", "patients");
 				});
 
 			});
-			
+
 			services.AddDependencies();
+			ConfigureLoggin();
 		}
 
 		public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory, IApplicationLifetime applicationLifetime)
 		{
-			if (Environment.IsDevelopment())
-			{
-				app.UseDeveloperExceptionPage();
-			}
+			app.UseDeveloperExceptionPage();
 
 			app.UseIdentityServer();
 
@@ -102,27 +106,40 @@ namespace ClinicHistoryApi
 			app.UseStaticFiles();
 
 			app.UseCors(builder =>
-				builder.WithOrigins("http://localhost:4200")
+				builder.WithOrigins(_settings.ClientUrl)
 				.AllowAnyHeader()
-				.AllowAnyMethod()				
+				.AllowAnyMethod()
 				.AllowCredentials());
 
 			app.UseAuthentication();
-			app.UseMvcWithDefaultRoute();			
+
+			app.UseSwagger();
+			app.UseSwaggerUI(c =>
+			{
+				c.SwaggerEndpoint("/swagger/v1/swagger.json", "Clinic History API V1");
+			});
+
+			app.UseMiddleware<ErrorLoggingMiddleware>();
+
+			app.UseMvcWithDefaultRoute();
+
+
+
+			Log.Information("Application Configured correctly");
 		}
 
-		private void ConfigureLogging(ILoggerFactory loggerFactory)
+		private void ConfigureLoggin()
 		{
-			var serilog = new LoggerConfiguration()
-				.ReadFrom
-				.Configuration(Configuration);
-			const string seqServerAddress = "http://localhost:5341";
-			loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-			serilog
-				.WriteTo.RollingFile("logs/log-{Date}.txt", LogEventLevel.Information)
-				.WriteTo.Seq(seqServerAddress);
+			var connectionString = Configuration.GetConnectionString("ClinicHistory");
+			Log.Logger = new LoggerConfiguration()
+				.MinimumLevel.Debug()
+				.MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+				.Enrich.FromLogContext()
+				.WriteTo.MSSqlServer(connectionString, "ClinicHistoryLogs", schemaName: "entities")
+				.WriteTo.Console()
+				.CreateLogger();
 
-			loggerFactory.AddSerilog(serilog.CreateLogger());
+			Log.Information("Getting the motors running...");
 		}
 	}
 }
