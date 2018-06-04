@@ -15,7 +15,7 @@ namespace ClinicHistoryApi.Models.Entities
 
 		public bool ComplementaryMethodRequested { get; set; }
 		
-		public DateTime Date { get; set; }
+		public string Date { get; set; }
 
 		public string DefecatoryHabit { get; set; }
 

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using ClinicHistoryApi.Entities;
@@ -27,7 +28,7 @@ namespace ClinicHistoryApi.Configuration
 				.ForMember(x => x.SocialSecurity, cfg => cfg.Ignore());				
 
 			CreateMap<Consultation, ConsultationModel>()
-				.ForMember(x => x.Date, cfg => cfg.MapFrom(x => x.Date.ToString("yyyy-MM-dd hh:mm")))				
+				.ForMember(x => x.Date, cfg => cfg.MapFrom(x => x.Date.ToString("d-M-yyyy h:m")))
 				.ForMember(x => x.Physician, cfg => cfg.MapFrom(x => x.CreatedBy))
 				.ForMember(x => x.PatientId, cfg => cfg.MapFrom(x => x.Patient.Id));
 
