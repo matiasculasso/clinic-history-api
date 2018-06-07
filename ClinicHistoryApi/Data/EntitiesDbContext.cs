@@ -64,6 +64,35 @@ namespace ClinicHistoryApi.Data
 			modelBuilder.Entity<Consultation>().HasIndex(x => x.PatientId);
 
 
+			modelBuilder.Entity<ComplementaryMethod>().HasKey(x => x.Id);
+			modelBuilder.Entity<ComplementaryMethod>().Property(x => x.Name).IsRequired();
+			modelBuilder.Entity<ComplementaryMethod>().HasIndex(x => x.Name).IsUnique();
+
+			modelBuilder.Entity<ComplementaryMethodInstance>().HasKey(x => x.Id);
+			modelBuilder.Entity<ComplementaryMethodInstance>().Property(x => x.ComplementaryMethodId)
+				.HasField("_complementaryMethodId")
+				.HasColumnName("ComplementaryMethodId");
+			modelBuilder.Entity<ComplementaryMethodInstance>().Property(x => x.ComplementaryMethodId).IsRequired();
+			modelBuilder.Entity<ComplementaryMethodInstance>().HasIndex(x => x.ComplementaryMethodId);
+
+			modelBuilder.Entity<Laboratory>().HasKey(x => x.Id);
+			modelBuilder.Entity<Laboratory>().Property(x => x.Name).IsRequired();
+			modelBuilder.Entity<Laboratory>().HasIndex(x => x.Name).IsUnique();
+
+			modelBuilder.Entity<LaboratoryInstance>().HasKey(x => x.Id);
+			modelBuilder.Entity<LaboratoryInstance>().Property(x => x.LaboratoryId)
+				.HasField("_laboratoryId")
+				.HasColumnName("LaboratoryId");
+			modelBuilder.Entity<LaboratoryInstance>().Property(x => x.LaboratoryId).IsRequired();
+			modelBuilder.Entity<LaboratoryInstance>().HasIndex(x => x.LaboratoryId);
+
+			modelBuilder.Entity<Complement>().HasKey(x => x.Id);
+			modelBuilder.Entity<Complement>().Property(x => x.ConsultationId)
+				.HasField("_consultationId")
+				.HasColumnName("ConsultationId");
+			modelBuilder.Entity<Complement>().Property(x => x.ConsultationId).IsRequired();
+			modelBuilder.Entity<Complement>().HasIndex(x => x.ConsultationId);
+
 			base.OnModelCreating(modelBuilder);
 		}
 

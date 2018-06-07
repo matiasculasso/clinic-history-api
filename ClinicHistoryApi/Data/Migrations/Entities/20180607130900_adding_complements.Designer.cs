@@ -11,9 +11,10 @@ using System;
 namespace ClinicHistoryApi.Data.Migrations.Entities
 {
     [DbContext(typeof(EntitiesDbContext))]
-    partial class EntitiesDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180607130900_adding_complements")]
+    partial class adding_complements
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,13 +44,9 @@ namespace ClinicHistoryApi.Data.Migrations.Entities
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Name")
-                        .IsRequired();
+                    b.Property<string>("Name");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
 
                     b.ToTable("ComplementaryMethod");
                 });
@@ -152,13 +149,9 @@ namespace ClinicHistoryApi.Data.Migrations.Entities
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Name")
-                        .IsRequired();
+                    b.Property<string>("Name");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
 
                     b.ToTable("Laboratory");
                 });

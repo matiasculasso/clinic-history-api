@@ -11,9 +11,10 @@ using System;
 namespace ClinicHistoryApi.Data.Migrations.Entities
 {
     [DbContext(typeof(EntitiesDbContext))]
-    partial class EntitiesDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180607184901_insert-complementary-methods")]
+    partial class insertcomplementarymethods
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
