@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ClinicHistoryApi.Controllers
 {
 	[AllowAnonymous]
-	//[Authorize(AuthenticationSchemes = "Bearer", Policy = "patients")]
+	[Authorize(AuthenticationSchemes = "Bearer", Policy = "patients")]
 	[Produces("application/json")]
 	public class ComplementsController : Controller
 	{
@@ -74,6 +74,16 @@ namespace ClinicHistoryApi.Controllers
 				}).OrderBy(x => x.Date).ToArray();
 
 			return result;
+		}
+
+		[HttpPost("api/complements/{patientId}")]
+		public async Task<IActionResult> Post(int patientId, [FromBody]ComplementEditModel[] model)
+		{			
+			var complements = await _genericService.Find<Complement>(
+				x => model.Any(y => y.Id == x.Id),
+				includeProperties: "ComplementaryMethods,LaboratoryInstances");
+		
+			return Ok();
 		}
 	}
 }

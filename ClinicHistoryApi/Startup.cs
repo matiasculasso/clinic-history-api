@@ -10,10 +10,10 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Security.Cryptography.X509Certificates;
 using ClinicHistoryApi.Configuration;
+using ClinicHistoryApi.Data;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
-using Serilog.Formatting;
-using Serilog.Sinks.MSSqlServer;
 using Swashbuckle.AspNetCore.Swagger;
 
 
@@ -123,7 +123,9 @@ namespace ClinicHistoryApi
 
 			app.UseMvcWithDefaultRoute();
 
-
+			Log.Information("Updating database");
+			UpdateDatabase(app);
+			Log.Information("Database updated correctly");
 
 			Log.Information("Application Configured correctly");
 		}
@@ -140,6 +142,23 @@ namespace ClinicHistoryApi
 				.CreateLogger();
 
 			Log.Information("Getting the motors running...");
+		}
+
+		private static void UpdateDatabase(IApplicationBuilder app)
+		{
+			using (var serviceScope = app.ApplicationServices
+				.GetRequiredService<IServiceScopeFactory>()
+				.CreateScope())
+			{
+				using (var context = serviceScope.ServiceProvider.GetService<EntitiesDbContext>())
+				{
+					context.Database.Migrate();
+				}
+				using (var context = serviceScope.ServiceProvider.GetService<UsersDbContext>())
+				{
+					context.Database.Migrate();
+				}
+			}
 		}
 	}
 }

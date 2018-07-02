@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using ClinicHistoryApi.Auth;
 using ClinicHistoryApi.Auth.Services;
 using ClinicHistoryApi.Data;
 using ClinicHistoryApi.Service;
@@ -51,6 +50,6 @@ namespace ClinicHistoryApi.Configuration
 			    .AddDefaultTokenProviders();
 
 		    return services;
-	    }
-    }
+	    }	   
+	}
 }

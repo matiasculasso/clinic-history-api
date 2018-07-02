@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
-
-namespace ClinicHistoryApi.Auth.Configuration
+﻿namespace ClinicHistoryApi.Configuration
 {
 	public static class ApplicationBuilderExtensions
 	{
