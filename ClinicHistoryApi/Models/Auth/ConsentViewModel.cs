@@ -3,6 +3,7 @@
 
 
 using System.Collections.Generic;
+using ClinicHistoryApi.Models.Auth;
 
 namespace ClinicHistoryApi.Auth.Models
 {

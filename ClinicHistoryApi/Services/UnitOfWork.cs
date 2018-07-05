@@ -1,9 +1,9 @@
-﻿using ClinicHistoryApi.Service.Interfaces;
-using ClinicHistoryApi.Data;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using ClinicHistoryApi.Data;
+using ClinicHistoryApi.Services.Intefaces;
 
-namespace ClinicHistoryApi.Service
+namespace ClinicHistoryApi.Services
 {
 	public class UnitOfWork : IUnitOfWork
 	{

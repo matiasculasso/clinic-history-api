@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using ClinicHistoryApi.Entities;
 using ClinicHistoryApi.Models.Entities;
-using ClinicHistoryApi.Service.Interfaces;
+using ClinicHistoryApi.Services.Intefaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -103,7 +103,7 @@ namespace ClinicHistoryApi.Controllers
 			}
 			return patient;
 		}
-
+		 
 		private void MapAndCreateConsultation (Patient patient, ConsultationModel model)
 		{
 			if (model == null)
@@ -112,8 +112,14 @@ namespace ClinicHistoryApi.Controllers
 			var consultation = new Consultation(patient, DateTime.Now, model.ComplementaryMethodRequested,
 				model.Length, model.Weight, model.Alimentation, model.Comments, model.DefecatoryHabit,
 				model.Evolution, model.SchoolPerformance, model.PhysicalExam, model.PhysicalActivity);
+			
+			var consultationId =  _genericService.Create(consultation).Result;
 
-			 _genericService.Create(consultation);
+			if (model.ComplementaryMethodRequested)
+			{
+				var complement = new Complement(consultationId, DateTime.Now);
+				_genericService.Create(complement);
+			}
 		}
 
 	}

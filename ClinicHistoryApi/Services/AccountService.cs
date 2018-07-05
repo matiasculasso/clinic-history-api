@@ -1,16 +1,16 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
+using ClinicHistoryApi.Auth.Models;
+using ClinicHistoryApi.Models.Auth;
 using IdentityModel;
 using IdentityServer4;
 using IdentityServer4.Extensions;
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
-using ClinicHistoryApi.Auth.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 
-namespace ClinicHistoryApi.Auth.Services
+namespace ClinicHistoryApi.Services
 {
 	public class AccountService
 	{

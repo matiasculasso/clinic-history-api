@@ -1,7 +1,8 @@
 ﻿using System.Threading.Tasks;
 using ClinicHistoryApi.Auth;
 using ClinicHistoryApi.Auth.Models;
-using ClinicHistoryApi.Auth.Services;
+using ClinicHistoryApi.Models.Auth;
+using ClinicHistoryApi.Services;
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
 using Microsoft.AspNetCore.Mvc;

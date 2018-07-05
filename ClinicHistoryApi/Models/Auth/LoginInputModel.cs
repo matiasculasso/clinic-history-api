@@ -5,7 +5,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace ClinicHistoryApi.Auth.Models
+namespace ClinicHistoryApi.Models.Auth
 {
     public class LoginInputModel
     {

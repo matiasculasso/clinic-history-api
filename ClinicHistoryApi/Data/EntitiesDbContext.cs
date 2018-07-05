@@ -15,6 +15,8 @@ namespace ClinicHistoryApi.Data
 
 		public DbSet<Patient> Patient { get; set; }
 
+		public DbSet<Complement> Complement { get; set; }
+
 		public EntitiesDbContext(DbContextOptions<EntitiesDbContext> options)
 			: base(options)
 		{

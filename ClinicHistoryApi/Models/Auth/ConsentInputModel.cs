@@ -4,7 +4,7 @@
 
 using System.Collections.Generic;
 
-namespace ClinicHistoryApi.Auth.Models
+namespace ClinicHistoryApi.Models.Auth
 {
     public class ConsentInputModel
     {

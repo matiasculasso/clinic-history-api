@@ -1,12 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using ClinicHistoryApi.Data;
 using ClinicHistoryApi.Entities;
 using ClinicHistoryApi.Models.Entities;
-using ClinicHistoryApi.Service.Interfaces;
+using ClinicHistoryApi.Services.Intefaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace ClinicHistoryApi.Controllers
 {
@@ -16,12 +19,13 @@ namespace ClinicHistoryApi.Controllers
 	public class ComplementsController : Controller
 	{
 		private readonly IGenericService _genericService;
-		private readonly IMapper _mapper;
+		private readonly EntitiesDbContext _dbContext;
 
-		public ComplementsController(IGenericService genericService, IMapper mapper)
+		public ComplementsController(IGenericService genericService, EntitiesDbContext dbContext)
 		{
 			_genericService = genericService;
-			_mapper = mapper;
+			_dbContext = dbContext;
+
 		}
 
 		[HttpGet("api/complements/complementary-methods")]
@@ -78,11 +82,38 @@ namespace ClinicHistoryApi.Controllers
 
 		[HttpPost("api/complements/{patientId}")]
 		public async Task<IActionResult> Post(int patientId, [FromBody]ComplementEditModel[] model)
-		{			
+		{
 			var complements = await _genericService.Find<Complement>(
 				x => model.Any(y => y.Id == x.Id),
 				includeProperties: "ComplementaryMethods,LaboratoryInstances");
-		
+
+			using (var dbTransacton = _dbContext.Database.BeginTransaction())
+			{
+				foreach (var comp in complements)
+				{					
+					comp.ComplementaryMethods.Clear();
+					comp.LaboratoryInstances.Clear();
+
+					// adding complementary method
+					var compMethods = model.First(x => x.Id == comp.Id)
+						.ComplementaryMethods
+						.Select(x => new ComplementaryMethodInstance(x.ComplementaryMethodId, x.Value))
+						.ToArray();
+						
+					comp.ComplementaryMethods.AddRange(compMethods);
+
+
+					// adding labs
+					var labs = model.First(x => x.Id == comp.Id)
+						.Laboratories
+						.Select(x => new LaboratoryInstance(x.LaboratoryId, x.Value))
+						.ToArray();
+
+					comp.LaboratoryInstances.AddRange(labs);
+				}
+				await _dbContext.SaveChangesAsync();
+				dbTransacton.Commit();
+			}
 			return Ok();
 		}
 	}

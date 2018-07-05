@@ -1,8 +1,7 @@
 ﻿using System.Reflection;
-using ClinicHistoryApi.Auth.Services;
 using ClinicHistoryApi.Data;
-using ClinicHistoryApi.Service;
-using ClinicHistoryApi.Service.Interfaces;
+using ClinicHistoryApi.Services;
+using ClinicHistoryApi.Services.Intefaces;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;

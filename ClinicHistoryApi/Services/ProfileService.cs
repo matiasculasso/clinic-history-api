@@ -1,8 +1,8 @@
-﻿using IdentityServer4.Models;
+﻿using System.Threading.Tasks;
+using IdentityServer4.Models;
 using IdentityServer4.Services;
-using System.Threading.Tasks;
 
-namespace ClinicHistoryApi.Auth.Services
+namespace ClinicHistoryApi.Services
 {
 	public class ProfileService : IProfileService
 	{

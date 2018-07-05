@@ -3,7 +3,6 @@ using IdentityServer4.Extensions;
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
 using ClinicHistoryApi.Auth.Models;
-using ClinicHistoryApi.Auth.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -12,6 +11,8 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using ClinicHistoryApi.Auth;
+using ClinicHistoryApi.Models.Auth;
+using ClinicHistoryApi.Services;
 
 
 namespace ClinicHistoryApi.Controllers

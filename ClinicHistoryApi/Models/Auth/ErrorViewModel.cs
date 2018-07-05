@@ -4,7 +4,7 @@
 
 using IdentityServer4.Models;
 
-namespace ClinicHistoryApi.Auth.Models
+namespace ClinicHistoryApi.Models.Auth
 {
     public class ErrorViewModel
     {

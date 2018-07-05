@@ -1,11 +1,10 @@
-﻿using ClinicHistoryApi.Entities;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using ClinicHistoryApi.Entities;
 
-namespace ClinicHistoryApi.Service.Interfaces
+namespace ClinicHistoryApi.Services.Intefaces
 {
 	public interface IGenericService
 	{

@@ -1,8 +1,8 @@
-﻿using ClinicHistoryApi.Data;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using ClinicHistoryApi.Data;
 
-namespace ClinicHistoryApi.Service.Interfaces
+namespace ClinicHistoryApi.Services.Intefaces
 {
 	public interface IUnitOfWork : IDisposable
 	{

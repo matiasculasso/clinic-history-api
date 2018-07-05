@@ -4,6 +4,6 @@
 	{
 		public int Id;
 		public ComplementaryMethodInstanceModel[] ComplementaryMethods { get; set; }		
-		public LaboratoryInstanceModel[] laboratories { get; set; }
+		public LaboratoryInstanceModel[] Laboratories { get; set; }
 	}
 }

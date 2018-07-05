@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using ClinicHistoryApi.Entities;
-using ClinicHistoryApi.Service.Interfaces;
+using ClinicHistoryApi.Services.Intefaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
-namespace ClinicHistoryApi.Service
+namespace ClinicHistoryApi.Services
 {
 	public class GenericService : IGenericService
 	{

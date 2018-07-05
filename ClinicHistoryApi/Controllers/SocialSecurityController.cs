@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using ClinicHistoryApi.Entities;
-using ClinicHistoryApi.Service.Interfaces;
+using ClinicHistoryApi.Services.Intefaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

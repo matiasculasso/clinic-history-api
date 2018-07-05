@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using ClinicHistoryApi.Entities;
 using ClinicHistoryApi.Models.Entities;
-using ClinicHistoryApi.Service.Interfaces;
+using ClinicHistoryApi.Services.Intefaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

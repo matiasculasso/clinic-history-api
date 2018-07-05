@@ -1,13 +1,14 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using ClinicHistoryApi.Auth.Models;
+using ClinicHistoryApi.Models.Auth;
 using IdentityServer4;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
-using ClinicHistoryApi.Auth.Models;
 using Microsoft.Extensions.Logging;
 
-namespace ClinicHistoryApi.Auth.Services
+namespace ClinicHistoryApi.Services
 {
 	public class ConsentService
 	{
