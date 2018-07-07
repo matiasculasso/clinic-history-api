@@ -11,6 +11,8 @@ using System;
 using System.Security.Cryptography.X509Certificates;
 using ClinicHistoryApi.Configuration;
 using ClinicHistoryApi.Data;
+using ClinicHistoryApi.Services;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
@@ -68,20 +70,27 @@ namespace ClinicHistoryApi
 				c.SwaggerDoc("v1", new Info { Title = "Clinic History API", Version = "v1" });
 			});
 
-			services.AddAuthentication("Bearer")
-				.AddIdentityServerAuthentication(options =>
-				{
-					options.RequireHttpsMetadata = false;
-					options.Authority = _settings.AutorityUrl;
-					options.ApiName = "patients";
-					options.ApiSecret = "patientsSecret";
-					options.SupportedTokens = SupportedTokens.Both;
-				});
+			if (Environment.IsDevelopment() == false)
+			{
+				services.AddAuthentication("Bearer")
+					.AddIdentityServerAuthentication(options =>
+					{
+						options.RequireHttpsMetadata = false;
+						options.Authority = _settings.AutorityUrl;
+						options.ApiName = "patients";
+						options.ApiSecret = "patientsSecret";
+						options.SupportedTokens = SupportedTokens.Both;
+					});
+			}
+			else
+			{
+				services.AddSingleton<IFilterProvider, RemoveAuthFiltersProvider>();
+			}
 
 			var patientsPolicy = new AuthorizationPolicyBuilder()
-			   .RequireAuthenticatedUser()
-			   .RequireClaim("scope", "patients")
-			   .Build();
+					   .RequireAuthenticatedUser()
+					   .RequireClaim("scope", "patients")
+					   .Build();
 
 			services.AddAuthorization(options =>
 			{
@@ -93,6 +102,7 @@ namespace ClinicHistoryApi
 			});
 
 			services.AddDependencies();
+
 			ConfigureLoggin();
 		}
 

@@ -150,6 +150,5 @@ namespace ClinicHistoryApi.Services
 
 			return vm;
 		}
-
 	}
 }

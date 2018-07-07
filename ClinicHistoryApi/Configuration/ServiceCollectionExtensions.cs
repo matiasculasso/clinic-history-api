@@ -5,6 +5,7 @@ using ClinicHistoryApi.Services.Intefaces;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,6 +20,9 @@ namespace ClinicHistoryApi.Configuration
 			services.AddScoped<IProfileService, ProfileService>();
 			services.AddTransient<IGenericService, GenericService>();
 			services.AddTransient<IUnitOfWork, UnitOfWork>();
+
+	        services.AddTransient<UserStore<IdentityUser>, UserStore<IdentityUser>>();
+
 			return services;
         }
 

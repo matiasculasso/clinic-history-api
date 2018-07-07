@@ -53,8 +53,8 @@ namespace ClinicHistoryApi.Configuration
 			{
 				new Client
 				{
-					ClientName = "clinic-hitstory",
-					ClientId = "clinic-hitstory",
+					ClientName = "clinic-history",
+					ClientId = "clinic-history",
 					AccessTokenType = AccessTokenType.Reference,
                     AllowedGrantTypes = GrantTypes.Implicit,
 					RequireConsent = false,

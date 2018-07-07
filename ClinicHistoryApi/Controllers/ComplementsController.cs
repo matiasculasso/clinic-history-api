@@ -13,7 +13,6 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace ClinicHistoryApi.Controllers
 {
-	[AllowAnonymous]
 	[Authorize(AuthenticationSchemes = "Bearer", Policy = "patients")]
 	[Produces("application/json")]
 	public class ComplementsController : Controller

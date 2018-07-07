@@ -8,8 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ClinicHistoryApi.Controllers
 {
-	[AllowAnonymous]
-	// [Authorize(AuthenticationSchemes = "Bearer", Policy = "patients")]
+	[Authorize(AuthenticationSchemes = "Bearer", Policy = "patients")]
 	[Produces("application/json")]	
 	public class SocialSecurityController : Controller
     {
