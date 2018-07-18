@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using ClinicHistoryApi.Data;
 using ClinicHistoryApi.Entities;
 using ClinicHistoryApi.Models.Entities;
 using ClinicHistoryApi.Services.Intefaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace ClinicHistoryApi.Controllers
 {
@@ -28,19 +24,19 @@ namespace ClinicHistoryApi.Controllers
 		}
 
 		[HttpGet("api/complements/complementary-methods")]
-		public async Task<NameModel[]> GetComplementaryMethdos()
+		public async Task<NamedModel[]> GetComplementaryMethdos()
 		{
 			var complementaryMethods = await _genericService.GetAll<ComplementaryMethod>();
-			return complementaryMethods.Select(x => new NameModel { Id = x.Id, Name = x.Name })
+			return complementaryMethods.Select(x => new NamedModel { Id = x.Id, Name = x.Name })
 				.OrderBy(x => x.Name)
 				.ToArray();
 		}
 
 		[HttpGet("api/complements/laboratories")]
-		public async Task<NameModel[]> GetLabs()
+		public async Task<NamedModel[]> GetLabs()
 		{
 			var labs = await _genericService.GetAll<Laboratory>();
-			return labs.Select(x => new NameModel { Id = x.Id, Name = x.Name })
+			return labs.Select(x => new NamedModel { Id = x.Id, Name = x.Name })
 				.OrderBy(x => x.Name)
 				.ToArray();
 		}

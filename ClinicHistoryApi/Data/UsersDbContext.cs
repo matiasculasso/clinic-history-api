@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using ClinicHistoryApi.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

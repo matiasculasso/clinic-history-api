@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 namespace ClinicHistoryApi.Entities
 {
 	public class Laboratory : BaseEntity

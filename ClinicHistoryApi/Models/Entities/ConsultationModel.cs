@@ -1,7 +1,4 @@
-﻿using System;
-
-
-namespace ClinicHistoryApi.Models.Entities
+﻿namespace ClinicHistoryApi.Models.Entities
 {
 	public class ConsultationModel
 	{

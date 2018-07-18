@@ -7,7 +7,6 @@ using ClinicHistoryApi.Models.Entities;
 using ClinicHistoryApi.Services.Intefaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace ClinicHistoryApi.Controllers
 {	

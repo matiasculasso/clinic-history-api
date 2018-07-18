@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace ClinicHistoryApi.Entities
+﻿namespace ClinicHistoryApi.Entities
 {
 	public class ComplementaryMethod : BaseEntity
 	{
